@@ -1,11 +1,9 @@
 {
-  "name": "ModTemplate",
-  "version": "0.1.0",
-  "title": "MOD TEMPLATE",
+  "name": "Sandbox",
+  "version": "0.0.1",
+  "title": "Sandbox",
   "author": "raiguard",
-  "contact": "Discord: Raiguard#7402",
-  "homepage": "https://github.com/raiguard/Factorio-ModTemplate",
-  "description": "This is a template for creating Factorio mods based on flib.",
-  "factorio_version": "1.0",
-  "dependencies": ["base >= 1.0.0", "flib >= 0.4.0"]
+  "factorio_version": "0.18",
+  "dependencies": ["base >= 0.18.26", "? flib >= 0.1.0"],
+  "description": "My playground!"
 }
