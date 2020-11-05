@@ -46,13 +46,8 @@ local function update_todos(gui_data)
         child.checkbox.state = todo.completed
         child.checkbox.caption = todo.text
 
-        -- TODO create helper function for this
-        local tags = child.checkbox.tags
-        tags.todo_id = id
-        child.checkbox.tags = tags
-        tags = child.delete_button.tags
-        tags.todo_id = id
-        child.delete_button.tags = tags
+        gui.update_tags(child.checkbox, {todo_id = id})
+        gui.update_tags(child.delete_button, {todo_id = id})
       else
         -- build
         gui.build(todos_flow, {
@@ -262,7 +257,7 @@ local function toggle_todo_completed(e)
   local gui_data = player_table.todo
   local state = gui_data.state
 
-  local todo_data = state.todos[e.element.tags.todo_id]
+  local todo_data = state.todos[gui.get_tags(e.element).todo_id]
   todo_data.completed = e.element.state
 
   update_todos(gui_data)
@@ -273,7 +268,7 @@ local function delete_todo(e)
   local gui_data = player_table.todo
   local state = gui_data.state
 
-  state.todos[e.element.tags.todo_id] = nil
+  state.todos[gui.get_tags(e.element).todo_id] = nil
 
   update_todos(gui_data)
 end
@@ -297,7 +292,7 @@ local function change_view_mode(e)
   local gui_data = player_table.todo
   local state = gui_data.state
 
-  state.mode = e.element.tags.mode
+  state.mode = gui.get_tags(e.element).mode
 
   update_mode_radios(gui_data)
   update_todos(gui_data)
