@@ -90,8 +90,10 @@ local function update_todos(gui_data)
 
   if i == 0 then
     todos_flow.visible = false
+    refs.subfooter_frame.visible = false
   else
     todos_flow.visible = true
+    refs.subfooter_frame.visible = true
   end
 
   refs.subfooter_flow.items_left_label.caption = active_count.." items left"
@@ -139,57 +141,63 @@ function todo_gui.build(player, player_table)
             elem_mods = {visible = false},
             ref = {"todos_flow"}
           },
-          {type = "frame", style = "subfooter_frame", children = {
-            {
-              type = "flow",
-              style_mods = {vertical_align = "center", left_margin = 8},
-              ref = {"subfooter_flow"},
-              children = {
-                {type = "label", name = "items_left_label", caption = "0 items left"},
-                {type = "empty-widget", style = "flib_horizontal_pusher"},
-                {
-                  type = "radiobutton",
-                  name = "all_radiobutton",
-                  caption = "All",
-                  state = true,
-                  handlers = {
-                    on_checked_state_changed = "todo_change_mode"
+          {
+            type = "frame",
+            style = "subfooter_frame",
+            elem_mods = {visible = false},
+            ref = {"subfooter_frame"},
+            children = {
+              {
+                type = "flow",
+                style_mods = {vertical_align = "center", left_margin = 8},
+                ref = {"subfooter_flow"},
+                children = {
+                  {type = "label", name = "items_left_label", caption = "0 items left"},
+                  {type = "empty-widget", style = "flib_horizontal_pusher"},
+                  {
+                    type = "radiobutton",
+                    name = "all_radiobutton",
+                    caption = "All",
+                    state = true,
+                    handlers = {
+                      on_checked_state_changed = "todo_change_mode"
+                    },
+                    tags = {mode = view_modes.all}
                   },
-                  tags = {mode = view_modes.all}
-                },
-                {
-                  type = "radiobutton",
-                  name = "active_radiobutton",
-                  caption = "Active",
-                  state = false,
-                  handlers = {
-                    on_checked_state_changed = "todo_change_mode"
+                  {
+                    type = "radiobutton",
+                    name = "active_radiobutton",
+                    caption = "Active",
+                    state = false,
+                    handlers = {
+                      on_checked_state_changed = "todo_change_mode"
+                    },
+                    tags = {mode = view_modes.active}
                   },
-                  tags = {mode = view_modes.active}
-                },
-                {
-                  type = "radiobutton",
-                  name = "completed_radiobutton",
-                  caption = "Completed",
-                  state = false,
-                  handlers = {
-                    on_checked_state_changed = "todo_change_mode"
+                  {
+                    type = "radiobutton",
+                    name = "completed_radiobutton",
+                    caption = "Completed",
+                    state = false,
+                    handlers = {
+                      on_checked_state_changed = "todo_change_mode"
+                    },
+                    tags = {mode = view_modes.completed}
                   },
-                  tags = {mode = view_modes.completed}
-                },
-                {type = "empty-widget", style = "flib_horizontal_pusher"},
-                {
-                  type = "button",
-                  name = "clear_completed_button",
-                  caption = "Clear completed",
-                  elem_mods = {enabled = false},
-                  handlers = {
-                    on_click = "todo_delete_completed_todos"
+                  {type = "empty-widget", style = "flib_horizontal_pusher"},
+                  {
+                    type = "button",
+                    name = "clear_completed_button",
+                    caption = "Clear completed",
+                    elem_mods = {enabled = false},
+                    handlers = {
+                      on_click = "todo_delete_completed_todos"
+                    }
                   }
                 }
               }
             }
-          }}
+          }
         }}
       }
     }
