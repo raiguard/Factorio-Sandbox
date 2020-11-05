@@ -197,6 +197,7 @@ function todo_gui.build(player, player_table)
 
   refs.titlebar_flow.drag_target = refs.window
   refs.window.force_auto_center()
+  player.opened = refs.window
 
   player_table.todo = {
     state = {
