@@ -1,3 +1,3 @@
-local boiler = data.raw["boiler"]["boiler"]
+-- local boiler = data.raw["boiler"]["boiler"]
 
 -- boiler.energy_consumption = "10MW"
