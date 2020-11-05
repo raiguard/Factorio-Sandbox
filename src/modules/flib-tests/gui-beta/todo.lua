@@ -200,7 +200,7 @@ function todo_gui.build(player, player_table)
 
   player_table.todo = {
     state = {
-      mode = view_modes.active,
+      mode = view_modes.all,
       next_id = 1,
       todos = {},
       visible = false
