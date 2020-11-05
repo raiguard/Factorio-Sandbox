@@ -27,7 +27,7 @@ local function update_todos(gui_data)
   local i = 0
   local active_count = 0
   local completed_count = 0
-  for id, todo in pairs(gui_data.state.todos) do
+  for id, todo in pairs(state.todos) do
     if todo.completed then
       completed_count = completed_count + 1
     else
@@ -85,10 +85,14 @@ local function update_todos(gui_data)
 
   if i == 0 then
     todos_flow.visible = false
-    refs.subfooter_frame.visible = false
   else
     todos_flow.visible = true
+  end
+
+  if next(state.todos) then
     refs.subfooter_frame.visible = true
+  else
+    refs.subfooter_frame.visible = false
   end
 
   refs.subfooter_flow.items_left_label.caption = active_count.." items left"
