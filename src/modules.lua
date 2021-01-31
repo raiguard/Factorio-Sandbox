@@ -1,3 +1,5 @@
 return {
-  "FluidMustFlow"
+  -- "FluidMustFlow"
+  -- "Krastorio2.creep-test"
+  "sandbox"
 }
