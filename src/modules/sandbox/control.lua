@@ -1,12 +1,26 @@
-script.on_event(defines.events.on_string_translated, function(e)
-  if not e.translated then
-    log(serpent.line(e.localised_string))
+local event = require("__flib__.event")
+
+local function sensor(player)
+  return {
+    "",
+    "Global pollution = ",
+    math.ceil(player.surface.get_total_pollution()),
+    " PU"
+  }
+end
+
+event.on_init(function()
+  if script.active_mods["StatsGui"] and remote.call("StatsGui", "version") == 1 then
+    remote.call("StatsGui", "add_sensor", "Sandbox", "pollution_sensor")
   end
 end)
 
-script.on_event(defines.events.on_player_created, function(e)
-  local player = game.get_player(e.player_index)
-  for _, tech in pairs(game.technology_prototypes) do
-    player.request_translation(tech.localised_description)
+event.on_load(function()
+  if script.active_mods["StatsGui"] and remote.call("StatsGui", "version") == 1 then
+    remote.call("StatsGui", "add_sensor", "Sandbox", "pollution_sensor")
   end
 end)
+
+remote.add_interface("Sandbox", {
+  pollution_sensor = sensor
+})
