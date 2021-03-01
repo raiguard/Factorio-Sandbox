@@ -1,5 +1,3 @@
-local event = require("__flib__.event")
-
 local function sensor(player)
   return {
     "",
@@ -9,18 +7,19 @@ local function sensor(player)
   }
 end
 
-event.on_init(function()
+script.on_init(function()
   if script.active_mods["StatsGui"] and remote.call("StatsGui", "version") == 1 then
-    remote.call("StatsGui", "add_sensor", "Sandbox", "pollution_sensor")
+    remote.call("StatsGui", "add_sensor", "MyMod", "pollution_sensor")
   end
 end)
 
-event.on_load(function()
+script.on_load(function()
   if script.active_mods["StatsGui"] and remote.call("StatsGui", "version") == 1 then
-    remote.call("StatsGui", "add_sensor", "Sandbox", "pollution_sensor")
+    remote.call("StatsGui", "add_sensor", "MyMod", "pollution_sensor")
   end
 end)
 
-remote.add_interface("Sandbox", {
+remote.add_interface("MyMod", {
   pollution_sensor = sensor
 })
+

@@ -1,7 +1,7 @@
 local area = require("__flib__.area")
 local event = require("__flib__.event")
 
-event.on_init(function(e)
+event.on_init(function()
   local MyArea = area.load({left_top = {x = -5, y = -3}, right_bottom = {x = 7, y = 12}})
 
   MyArea:rotate()
@@ -56,6 +56,4 @@ event.on_init(function(e)
     players = {1},
     draw_on_ground = true
   }
-
-  local breakpoint
 end)
