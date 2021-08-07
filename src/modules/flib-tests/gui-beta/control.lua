@@ -22,7 +22,7 @@ event.on_player_created(function(e)
       type = "button",
       style = mod_gui.button_style,
       caption = "TodoMVC",
-      handlers = {
+      actions = {
         on_click = "toggle_todo_gui"
       }
     }
@@ -40,7 +40,14 @@ local function toggle_todo_gui(e)
     todo_gui.open(e)
   end
 end
-gui.add_handlers{toggle_todo_gui = toggle_todo_gui}
-gui.add_handlers(todo_gui)
 
-gui.hook_gui_events()
+gui.hook_events(function(e)
+  local action = gui.read_action(e)
+  if action then
+    if action == "toggle_todo_gui" then
+      toggle_todo_gui(e)
+    else
+      todo_gui.actions[action](e)
+    end
+  end
+end)
