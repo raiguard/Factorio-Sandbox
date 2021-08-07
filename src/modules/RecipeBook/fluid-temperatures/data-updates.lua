@@ -44,5 +44,11 @@ test.results[3] = {
   temperature = 0
 }
 
+for _, product in pairs(data.raw["recipe"]["advanced-oil-processing"].results) do
+  if product.name == "petroleum-gas" then
+    product.temperature = 115.5
+  end
+end
+
 data:extend{test}
 
