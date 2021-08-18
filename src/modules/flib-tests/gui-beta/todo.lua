@@ -42,39 +42,41 @@ local function update_todos(gui_data)
       i = i + 1
       local child = children[i]
       if child then
-        -- update
-        child.checkbox.state = todo.completed
-        child.checkbox.caption = todo.text
-
-        gui.update_tags(child.checkbox, {todo_id = id})
-        gui.update_tags(child.delete_button, {todo_id = id})
+        gui.update(
+          child,
+          {
+            {
+              elem_mods = {caption = todo.text, state = todo.completed},
+              tags = {todo_id = id}
+            },
+            {},
+            {tags = {todo_id = id}}
+          }
+        )
       else
-        -- build
         gui.build(todos_flow, {
-          {type = "flow", style_mods = {vertical_align = "center"}, children = {
+          {type = "flow", style_mods = {vertical_align = "center"},
             {
               type = "checkbox",
-              name = "checkbox",
               caption = todo.text,
               state = todo.completed,
-              handlers = {
-                on_click = "todo_toggle_completed"
+              actions = {
+                on_click = "toggle_completed"
               },
               tags = {todo_id = id}
             },
             {type = "empty-widget", style = "flib_horizontal_pusher"},
             {
               type = "sprite-button",
-              name = "delete_button",
               style = "tool_button_red",
               sprite = "utility/trash",
               tooltip = "Delete",
-              handlers = {
-                on_click = "todo_delete_todo"
+              actions = {
+                on_click = "delete_todo"
               },
               tags = {todo_id = id}
             }
-          }}
+          }
         })
       end
     end
@@ -105,99 +107,93 @@ function todo_gui.build(player, player_table)
       type = "frame",
       direction = "vertical",
       ref = {"window"},
-      handlers = {
-        on_closed = "todo_close"
+      actions = {
+        on_closed = "close"
       },
-      children = {
-        {type = "flow", ref = {"titlebar_flow"}, children = {
-          {type ="label", style = "frame_title", caption = "TodoMVC", ignored_by_interaction = true},
-          {type = "empty-widget", style = "flib_titlebar_drag_handle", ignored_by_interaction = true},
-          {
-            type = "sprite-button",
-            style = "frame_action_button",
-            sprite = "utility/close_white",
-            hovered_sprite = "utility/close_black",
-            clicked_sprite = "utility/close_black",
-            mouse_button_filter = {"left"},
-            handlers = {
-              on_click = "todo_close"
-            }
+      {type = "flow", ref = {"titlebar_flow"}, children = {
+        {type ="label", style = "frame_title", caption = "TodoMVC", ignored_by_interaction = true},
+        {type = "empty-widget", style = "flib_titlebar_drag_handle", ignored_by_interaction = true},
+        {
+          type = "sprite-button",
+          style = "frame_action_button",
+          sprite = "utility/close_white",
+          hovered_sprite = "utility/close_black",
+          clicked_sprite = "utility/close_black",
+          mouse_button_filter = {"left"},
+          actions = {
+            on_click = "close"
           }
-        }},
-        {type = "frame", style = "inside_shallow_frame", direction = "vertical", children = {
-          {
-            type = "textfield",
-            style_mods = {width = 500, margin = 12},
-            ref = {"textfield"},
-            handlers = {
-              on_confirmed = "todo_add_todo"
-            }
-          },
+        }
+      }},
+      {type = "frame", style = "inside_shallow_frame", direction = "vertical",
+        {
+          type = "textfield",
+          style_mods = {width = 500, margin = 12},
+          ref = {"textfield"},
+          actions = {
+            on_confirmed = "add_todo"
+          }
+        },
+        {
+          type = "flow",
+          style_mods = {left_margin = 12, right_margin = 12, bottom_margin = 12},
+          direction = "vertical",
+          elem_mods = {visible = false},
+          ref = {"todos_flow"}
+        },
+        {
+          type = "frame",
+          style = "subfooter_frame",
+          elem_mods = {visible = false},
+          ref = {"subfooter_frame"},
           {
             type = "flow",
-            style_mods = {left_margin = 12, right_margin = 12, bottom_margin = 12},
-            direction = "vertical",
-            elem_mods = {visible = false},
-            ref = {"todos_flow"}
-          },
-          {
-            type = "frame",
-            style = "subfooter_frame",
-            elem_mods = {visible = false},
-            ref = {"subfooter_frame"},
-            children = {
-              {
-                type = "flow",
-                style_mods = {vertical_align = "center", left_margin = 8},
-                ref = {"subfooter_flow"},
-                children = {
-                  {type = "label", name = "items_left_label", caption = "0 items left"},
-                  {type = "empty-widget", style = "flib_horizontal_pusher"},
-                  {
-                    type = "radiobutton",
-                    name = "all_radiobutton",
-                    caption = "All",
-                    state = true,
-                    handlers = {
-                      on_checked_state_changed = "todo_change_mode"
-                    },
-                    tags = {mode = view_modes.all}
-                  },
-                  {
-                    type = "radiobutton",
-                    name = "active_radiobutton",
-                    caption = "Active",
-                    state = false,
-                    handlers = {
-                      on_checked_state_changed = "todo_change_mode"
-                    },
-                    tags = {mode = view_modes.active}
-                  },
-                  {
-                    type = "radiobutton",
-                    name = "completed_radiobutton",
-                    caption = "Completed",
-                    state = false,
-                    handlers = {
-                      on_checked_state_changed = "todo_change_mode"
-                    },
-                    tags = {mode = view_modes.completed}
-                  },
-                  {type = "empty-widget", style = "flib_horizontal_pusher"},
-                  {
-                    type = "button",
-                    name = "clear_completed_button",
-                    caption = "Clear completed",
-                    elem_mods = {enabled = false},
-                    handlers = {
-                      on_click = "todo_delete_completed_todos"
-                    }
-                  }
-                }
+            style_mods = {vertical_align = "center", left_margin = 8},
+            ref = {"subfooter_flow"},
+            {type = "label", name = "items_left_label", caption = "0 items left"},
+            {type = "empty-widget", style = "flib_horizontal_pusher"},
+            {
+              type = "radiobutton",
+              name = "all_radiobutton",
+              caption = "All",
+              state = true,
+              actions = {
+                on_checked_state_changed = "change_mode"
+              },
+              tags = {mode = view_modes.all}
+            },
+            {
+              type = "radiobutton",
+              name = "active_radiobutton",
+              caption = "Active",
+              state = false,
+              actions = {
+                on_checked_state_changed = "change_mode"
+              },
+              tags = {mode = view_modes.active}
+            },
+            {
+              type = "radiobutton",
+              name = "completed_radiobutton",
+              caption = "Completed",
+              state = false,
+              actions = {
+                on_checked_state_changed = "change_mode"
+              },
+              tags = {mode = view_modes.completed}
+            },
+            {type = "empty-widget", style = "flib_horizontal_pusher"},
+            {
+              type = "button",
+              name = "clear_completed_button",
+              caption = "Clear completed",
+              elem_mods = {enabled = false},
+              actions = {
+                on_click = "delete_completed_todos"
               }
             }
           }
-        }}
+        }
       }
     }
   })
@@ -302,13 +298,13 @@ local function change_view_mode(e)
   update_todos(gui_data)
 end
 
-todo_gui.handlers = {
-  todo_close = todo_gui.close,
-  todo_add_todo = add_todo,
-  todo_toggle_completed = toggle_todo_completed,
-  todo_delete_todo = delete_todo,
-  todo_delete_completed_todos = delete_completed_todos,
-  todo_change_mode = change_view_mode
+todo_gui.actions = {
+  close = todo_gui.close,
+  add_todo = add_todo,
+  toggle_completed = toggle_todo_completed,
+  delete_todo = delete_todo,
+  delete_completed_todos = delete_completed_todos,
+  change_mode = change_view_mode
 }
 
 return todo_gui

@@ -21,5 +21,34 @@ test.ingredients[5] = {
   temperature = 100
 }
 
+data.raw["fluid"]["petroleum-gas"].max_temperature = 150
+test.results[1] = {
+  type = "fluid",
+  name = "petroleum-gas",
+  amount = 55,
+  temperature = 100,
+}
+data.raw["fluid"]["heavy-oil"].max_temperature = 1000000
+test.results[2] = {
+  type = "fluid",
+  name = "heavy-oil",
+  amount = 25,
+  temperature = 1000000
+}
+data.raw["fluid"]["light-oil"].default_temperature = -50
+data.raw["fluid"]["light-oil"].max_temperature = 50
+test.results[3] = {
+  type = "fluid",
+  name = "light-oil",
+  amount = 45,
+  temperature = 0
+}
+
+for _, product in pairs(data.raw["recipe"]["advanced-oil-processing"].results) do
+  if product.name == "petroleum-gas" then
+    product.temperature = 115.5
+  end
+end
+
 data:extend{test}
 

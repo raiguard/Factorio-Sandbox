@@ -1,8 +1,12 @@
 return {
   -- "RecipeBook.fluid-temperatures"
   -- "flib-tests.area"
-  -- "lab-green"
-  -- "draggable-gui-elements"
+  -- "on-tick-desync"
+  -- "flib-tests.translation-experiment"
+  -- "flib-tests.translation-new"
+  -- "flib-tests.dictionary",
+  "flib-tests.gui-beta",
   -- "sandbox"
-  "stats-gui-test"
+  -- "locomotive-gui"
+  -- "jetpack-ui"
 }
