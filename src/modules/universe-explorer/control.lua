@@ -182,7 +182,6 @@ event.on_player_created(function(e)
           type = "frame",
           style = "inside_shallow_frame",
           direction = "vertical",
-
           {
             type = "frame",
             style = "subheader_frame",
