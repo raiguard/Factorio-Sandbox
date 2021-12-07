@@ -1,6 +1,88 @@
 local event = require("__flib__.event")
 local gui = require("__flib__.gui")
 
+local hovered_font_color = { 28, 28, 28 }
+
+local function sort_checkbox(caption, width, center)
+  if center == nil then
+    center = true
+  end
+  return {
+    type = "flow",
+    style_mods = { width = width, horizontal_align = center and "center" or nil },
+    {
+      type = "checkbox",
+      style = "se_selected_sort_checkbox",
+      state = false,
+      caption = caption,
+    },
+  }
+end
+
+local function list_row(hierarchy, icon, name, radius, ore, attrition, threat, solar, flags, priority, selected)
+  return {
+    type = "button",
+    style = "se_universe_list_item",
+    style_mods = { horizontally_stretchable = true, left_padding = 4, right_padding = 4 },
+    enabled = not selected,
+    {
+      type = "flow",
+      style_mods = { padding = 0, margin = 0 },
+      ignored_by_interaction = true,
+      {
+        type = "label",
+        style_mods = { font_color = selected and hovered_font_color or nil, width = 68 },
+        caption = hierarchy,
+      },
+      {
+        type = "label",
+        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        caption = icon,
+      },
+      {
+        type = "label",
+        style_mods = { font_color = selected and hovered_font_color or nil, width = 210 },
+        caption = name,
+      },
+      {
+        type = "label",
+        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        caption = radius,
+      },
+      {
+        type = "label",
+        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        caption = ore,
+      },
+      {
+        type = "label",
+        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        caption = attrition,
+      },
+      {
+        type = "label",
+        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        caption = threat,
+      },
+      {
+        type = "label",
+        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        caption = solar,
+      },
+      {
+        type = "label",
+        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        caption = flags,
+      },
+      {
+        type = "label",
+        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        caption = priority,
+      },
+    },
+  }
+end
+
 event.on_player_created(function(e)
   local player = game.get_player(e.player_index)
 
@@ -38,14 +120,6 @@ event.on_player_created(function(e)
         {
           type = "sprite-button",
           style = "frame_action_button",
-          sprite = "flib_pin_white",
-          hovered_sprite = "flib_pin_black",
-          clicked_sprite = "flib_pin_black",
-          tooltip = "Keep open",
-        },
-        {
-          type = "sprite-button",
-          style = "frame_action_button",
           sprite = "utility/close_white",
           hovered_sprite = "utility/close_black",
           clicked_sprite = "utility/close_black",
@@ -58,19 +132,113 @@ event.on_player_created(function(e)
         {
           type = "frame",
           style = "inside_deep_frame",
-          style_mods = { width = 800, height = 700 },
+          style_mods = { height = 36 + (28 * 24) },
           direction = "vertical",
-
           {
             type = "frame",
             style = "subheader_frame",
-            style_mods = { horizontally_stretchable = true },
-            { type = "label", style = "subheader_caption_label", caption = "List" },
+            style_mods = { horizontally_stretchable = true, left_padding = 8, right_padding = 8 },
+            sort_checkbox("[img=virtual-signal/se-hierarchy]", 68),
+            sort_checkbox("[img=virtual-signal/se-planet]", 68),
+            sort_checkbox("Name", 210, false),
+            sort_checkbox("[img=virtual-signal/se-radius]", 68),
+            sort_checkbox("[img=item/se-core-fragment-omni]", 68),
+            sort_checkbox("[img=item/logistic-robot]", 68),
+            sort_checkbox("[img=item/artillery-targeting-remote]", 68),
+            sort_checkbox("[img=item/solar-panel]", 68),
+            sort_checkbox("[img=item/se-rocket-landing-pad]", 68),
+            sort_checkbox("[img=virtual-signal/se-accolade]", 68),
           },
           {
             type = "scroll-pane",
-            style = "list_box_scroll_pane",
+            style = "se_universe_list_scroll_pane",
             style_mods = { horizontally_stretchable = true, vertically_stretchable = true },
+            list_row("⬤", "[img=virtual-signal/se-star]", "Calidus Orbit", "-", "-", "10.23", "0%", "1526%", "", "0"),
+            list_row(
+              "   | - ●",
+              "[img=virtual-signal/se-planet]",
+              "Nauvis",
+              "5692",
+              "[img=item/se-core-fragment-omni]",
+              "1.00",
+              "33%",
+              "100%",
+              "",
+              "1",
+              true
+            ),
+            list_row(
+              "   |    ○",
+              "[img=virtual-signal/se-planet-orbit]",
+              "Nauvis Orbit",
+              "-",
+              "-",
+              "7.31",
+              "0%",
+              "467%",
+              "",
+              "0"
+            ),
+            list_row(
+              "   | - ●",
+              "[img=virtual-signal/se-planet]",
+              "Cinrad",
+              "6391",
+              "[img=item/iron-ore]",
+              "0.79",
+              "7%",
+              "83%",
+              "",
+              "0"
+            ),
+            list_row(
+              "   |    ○",
+              "[img=virtual-signal/se-planet-orbit]",
+              "Cinrad Orbit",
+              "-",
+              "-",
+              "6.71",
+              "0%",
+              "417%",
+              "",
+              "0"
+            ),
+            list_row(
+              "   | - ●",
+              "[img=virtual-signal/se-planet]",
+              "Kuyou",
+              "4029",
+              "[img=item/uranium-ore]",
+              "0.40",
+              "67%",
+              "33%",
+              "",
+              "0"
+            ),
+            list_row(
+              "   |    ○",
+              "[img=virtual-signal/se-planet-orbit]",
+              "Kuyou Orbit",
+              "-",
+              "-",
+              "3.12",
+              "0%",
+              "167%",
+              "",
+              "0"
+            ),
+            list_row(
+              " ✖",
+              "[img=virtual-signal/se-asteroid-field]",
+              "Cosmic Dustlands",
+              "-",
+              "[img=item/se-methane-ice]",
+              "0.10",
+              "0%",
+              "1%",
+              "",
+              "0"
+            ),
           },
         },
         {
