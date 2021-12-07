@@ -108,6 +108,30 @@ local function resource_bar(resource_name)
   }
 end
 
+local function priority_display()
+  return { type = "label", caption = "[img=virtual-signal/se-accolade]" }, {
+    type = "textfield",
+    style_mods = { width = 50, horizontal_align = "center" },
+    text = "1",
+  }, {
+    type = "flow",
+    style_mods = { vertical_spacing = 0, top_margin = 2 },
+    direction = "vertical",
+    {
+      type = "sprite-button",
+      style = "mini_button_aligned_to_text_vertically",
+      style_mods = { padding = -1, margin = 0, height = 14, width = 14 },
+      sprite = "rb_collapsed",
+    },
+    {
+      type = "sprite-button",
+      style = "mini_button_aligned_to_text_vertically",
+      style_mods = { padding = -1, margin = 0, height = 14, width = 14 },
+      sprite = "rb_expanded",
+    },
+  }
+end
+
 event.on_player_created(function(e)
   local player = game.get_player(e.player_index)
 
@@ -153,31 +177,80 @@ event.on_player_created(function(e)
       },
       {
         type = "flow",
-        style_mods = { height = 708, horizontal_spacing = 12 },
+        style_mods = { height = 745, horizontal_spacing = 12 },
         {
           type = "frame",
           style = "inside_deep_frame",
-          style_mods = { height = 36 + (28 * 24) },
           direction = "vertical",
           {
             type = "frame",
             style = "subheader_frame",
-            style_mods = { horizontally_stretchable = true, left_padding = 8, right_padding = 8 },
-            sort_checkbox("[img=virtual-signal/se-hierarchy]", 68),
-            sort_checkbox("[img=virtual-signal/se-planet]", 68),
-            sort_checkbox("Name", 210, false),
-            sort_checkbox("[img=virtual-signal/se-radius]", 68),
-            sort_checkbox("[img=item/se-core-fragment-omni]", 68),
-            sort_checkbox("[img=item/logistic-robot]", 68),
-            sort_checkbox("[img=item/artillery-targeting-remote]", 68),
-            sort_checkbox("[img=item/solar-panel]", 68),
-            sort_checkbox("[img=item/se-rocket-landing-pad]", 68),
-            sort_checkbox("[img=virtual-signal/se-accolade]", 68),
+            style_mods = { top_padding = 2, height = 0 },
+            direction = "vertical",
+            {
+              type = "flow",
+              style_mods = { vertical_align = "center" },
+              {
+                type = "flow",
+                style_mods = { horizontal_spacing = 0 },
+                { type = "sprite-button", style = "flib_selected_tool_button", sprite = "virtual-signal/se-star" },
+                { type = "sprite-button", style = "flib_selected_tool_button", sprite = "virtual-signal/se-planet" },
+                {
+                  type = "sprite-button",
+                  style = "flib_selected_tool_button",
+                  sprite = "virtual-signal/se-planet-orbit",
+                },
+                { type = "sprite-button", style = "flib_selected_tool_button", sprite = "virtual-signal/se-moon" },
+                {
+                  type = "sprite-button",
+                  style = "flib_selected_tool_button",
+                  sprite = "virtual-signal/se-moon-orbit",
+                },
+                {
+                  type = "sprite-button",
+                  style = "flib_selected_tool_button",
+                  sprite = "virtual-signal/se-asteroid-belt",
+                },
+                {
+                  type = "sprite-button",
+                  style = "flib_selected_tool_button",
+                  sprite = "virtual-signal/se-asteroid-field",
+                },
+                {
+                  type = "sprite-button",
+                  style = "flib_selected_tool_button",
+                  sprite = "virtual-signal/se-spaceship",
+                },
+              },
+              { type = "empty-widget", style = "flib_horizontal_pusher" },
+              priority_display(),
+            },
+            { type = "line", style = "rb_dark_line", direction = "horizontal" },
+            {
+              type = "flow",
+              style_mods = {
+                horizontally_stretchable = true,
+                left_padding = 4,
+                right_padding = 4,
+                height = 28,
+                top_padding = 3,
+              },
+              sort_checkbox("[img=virtual-signal/se-hierarchy]", 68),
+              sort_checkbox("[img=virtual-signal/se-planet]", 68),
+              sort_checkbox("Name", 210, false),
+              sort_checkbox("[img=virtual-signal/se-radius]", 68),
+              sort_checkbox("[img=item/se-core-fragment-omni]", 68),
+              sort_checkbox("[img=item/logistic-robot]", 68),
+              sort_checkbox("[img=item/artillery-targeting-remote]", 68),
+              sort_checkbox("[img=item/solar-panel]", 68),
+              sort_checkbox("[img=item/se-rocket-landing-pad]", 68),
+              sort_checkbox("[img=virtual-signal/se-accolade]", 68),
+            },
           },
           {
             type = "scroll-pane",
             style = "se_universe_list_scroll_pane",
-            style_mods = { horizontally_stretchable = true, vertically_stretchable = true },
+            style_mods = { horizontally_stretchable = true, vertically_stretchable = true, height = 28 * 24 },
             list_row("⬤", "[img=virtual-signal/se-star]", "Calidus Orbit", "-", "-", "10.23", "0%", "1526%", "", "0"),
             list_row(
               "   | - ●",
@@ -275,12 +348,13 @@ event.on_player_created(function(e)
             style = "inside_shallow_frame",
             style_mods = { width = 300, vertically_stretchable = true },
             direction = "vertical",
-
             {
               type = "frame",
               style = "subheader_frame",
               style_mods = { horizontally_stretchable = true },
               { type = "label", style = "subheader_caption_label", caption = "Nauvis" },
+              { type = "empty-widget", style = "flib_horizontal_pusher" },
+              priority_display(),
             },
             {
               type = "scroll-pane",
