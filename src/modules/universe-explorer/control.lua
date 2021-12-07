@@ -20,6 +20,8 @@ local function sort_checkbox(caption, width, center)
 end
 
 local function list_row(hierarchy, icon, name, radius, ore, attrition, threat, solar, flags, priority, selected)
+  local font_color = selected and hovered_font_color or nil
+
   return {
     type = "button",
     style = "se_universe_list_item",
@@ -29,56 +31,79 @@ local function list_row(hierarchy, icon, name, radius, ore, attrition, threat, s
       type = "flow",
       style_mods = { padding = 0, margin = 0 },
       ignored_by_interaction = true,
+      { type = "label", style_mods = { font_color = font_color, width = 68 }, caption = hierarchy },
       {
         type = "label",
-        style_mods = { font_color = selected and hovered_font_color or nil, width = 68 },
-        caption = hierarchy,
-      },
-      {
-        type = "label",
-        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        style_mods = { font_color = font_color, width = 68, horizontal_align = "center" },
         caption = icon,
       },
+      { type = "label", style_mods = { font_color = font_color, width = 210 }, caption = name },
       {
         type = "label",
-        style_mods = { font_color = selected and hovered_font_color or nil, width = 210 },
-        caption = name,
-      },
-      {
-        type = "label",
-        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        style_mods = { font_color = font_color, width = 68, horizontal_align = "center" },
         caption = radius,
       },
       {
         type = "label",
-        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        style_mods = { font_color = font_color, width = 68, horizontal_align = "center" },
         caption = ore,
       },
       {
         type = "label",
-        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        style_mods = { font_color = font_color, width = 68, horizontal_align = "center" },
         caption = attrition,
       },
       {
         type = "label",
-        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        style_mods = { font_color = font_color, width = 68, horizontal_align = "center" },
         caption = threat,
       },
       {
         type = "label",
-        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        style_mods = { font_color = font_color, width = 68, horizontal_align = "center" },
         caption = solar,
       },
       {
         type = "label",
-        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        style_mods = { font_color = font_color, width = 68, horizontal_align = "center" },
         caption = flags,
       },
       {
         type = "label",
-        style_mods = { font_color = selected and hovered_font_color or nil, width = 68, horizontal_align = "center" },
+        style_mods = { font_color = font_color, width = 68, horizontal_align = "center" },
         caption = priority,
       },
+    },
+  }
+end
+
+local function detail_flow(label, value)
+  return {
+    type = "flow",
+    { type = "label", style_mods = { font = "default-semibold" }, caption = label },
+    { type = "empty-widget", style = "flib_horizontal_pusher" },
+    { type = "label", caption = value },
+  }
+end
+
+local function resource_bar(resource_name)
+  local resource = game.entity_prototypes[resource_name]
+  return {
+    type = "flow",
+    style_mods = { top_padding = 2, bottom_padding = 2 },
+    { type = "label", style_mods = { top_margin = 4 }, caption = "[img=entity/" .. resource_name .. "]" },
+    {
+      type = "progressbar",
+      style_mods = {
+        bar_width = 24,
+        color = resource.map_color,
+        font = "default-semibold",
+        font_color = resource_name == "coal" and { 255, 255, 255 } or { 28, 28, 28 },
+        horizontally_stretchable = true,
+        top_padding = 1,
+      },
+      caption = resource.localised_name,
+      value = 1,
     },
   }
 end
@@ -128,7 +153,7 @@ event.on_player_created(function(e)
       },
       {
         type = "flow",
-        style_mods = { horizontal_spacing = 12 },
+        style_mods = { height = 708, horizontal_spacing = 12 },
         {
           type = "frame",
           style = "inside_deep_frame",
@@ -255,7 +280,27 @@ event.on_player_created(function(e)
               type = "frame",
               style = "subheader_frame",
               style_mods = { horizontally_stretchable = true },
-              { type = "label", style = "subheader_caption_label", caption = "Surface info" },
+              { type = "label", style = "subheader_caption_label", caption = "Nauvis" },
+            },
+            {
+              type = "scroll-pane",
+              style = "flib_naked_scroll_pane",
+              direction = "vertical",
+              detail_flow("Zone type", "[img=virtual-signal/se-planet]  Planet"),
+              detail_flow("Parent", "Calidus"),
+              detail_flow("Radius", "5692"),
+              detail_flow("Day/night cycle", "6.94 minutes"),
+              detail_flow("Robot interference wind", "1.00"),
+              detail_flow("Threat", "33%"),
+              detail_flow("Solar", "100%"),
+              detail_flow("Automation signal", "[img=virtual-signal/se-planet]  4"),
+              { type = "line", direction = "horizontal" },
+              resource_bar("crude-oil"),
+              resource_bar("iron-ore"),
+              resource_bar("stone"),
+              resource_bar("copper-ore"),
+              resource_bar("coal"),
+              resource_bar("uranium-ore"),
             },
           },
           {
