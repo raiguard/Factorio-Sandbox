@@ -1,15 +1,9 @@
 local event = require("__flib__.event")
+local table = require("__flib__.table")
 
-event.on_init(function()
-  global.count = 0
-end)
+event.on_player_created(function(e)
+  local arr = {1, 2, 3, 4, 5}
+  local slice  = table.slice(arr, 3, 0)
 
-event.on_equipment_inserted(function(e)
-  global.count = global.count + 1
-  game.print(global.count.." INSERTED "..e.equipment.name)
-end)
-
-event.on_equipment_removed(function(e)
-  global.count = global.count + 1
-  game.print(global.count.." REMOVED "..e.equipment)
+  game.print(serpent.line{arr, slice})
 end)
