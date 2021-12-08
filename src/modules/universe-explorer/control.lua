@@ -109,25 +109,31 @@ local function resource_bar(resource_name)
 end
 
 local function priority_display()
-  return { type = "label", caption = "[img=virtual-signal/se-accolade]" }, {
-    type = "textfield",
-    style_mods = { width = 50, horizontal_align = "center" },
-    text = "1",
-  }, {
+  return {
     type = "flow",
-    style_mods = { vertical_spacing = 0, top_margin = 2 },
-    direction = "vertical",
+    style_mods = { top_margin = -1, vertical_align = "center" },
+    { type = "label", caption = "[img=virtual-signal/se-accolade]" },
     {
-      type = "sprite-button",
-      style = "mini_button_aligned_to_text_vertically",
-      style_mods = { padding = -1, margin = 0, height = 14, width = 14 },
-      sprite = "rb_collapsed",
+      type = "textfield",
+      style_mods = { width = 50, horizontal_align = "center" },
+      text = "1",
     },
     {
-      type = "sprite-button",
-      style = "mini_button_aligned_to_text_vertically",
-      style_mods = { padding = -1, margin = 0, height = 14, width = 14 },
-      sprite = "rb_expanded",
+      type = "flow",
+      style_mods = { vertical_spacing = 0, top_margin = 2 },
+      direction = "vertical",
+      {
+        type = "sprite-button",
+        style = "mini_button_aligned_to_text_vertically",
+        style_mods = { padding = -1, margin = 0, height = 14, width = 14 },
+        sprite = "rb_collapsed",
+      },
+      {
+        type = "sprite-button",
+        style = "mini_button_aligned_to_text_vertically",
+        style_mods = { padding = -1, margin = 0, height = 14, width = 14 },
+        sprite = "rb_expanded",
+      },
     },
   }
 end
@@ -155,7 +161,7 @@ event.on_player_created(function(e)
           type = "button",
           style = "frame_button",
           style_mods = { height = 24, font_color = { 255, 255, 255 }, left_padding = 4, right_padding = 4 },
-          caption = "[img=se-map-gui-starmap]  Interstellar Map",
+          caption = "[img=se-map-gui-starmap] Interstellar Map",
         },
         { type = "line", style_mods = { top_margin = -2, bottom_margin = 2 }, direction = "vertical" },
         {
@@ -365,14 +371,14 @@ event.on_player_created(function(e)
               type = "scroll-pane",
               style = "flib_naked_scroll_pane",
               direction = "vertical",
-              detail_flow("Zone type", "[img=virtual-signal/se-planet]  Planet"),
+              detail_flow("Zone type", "[img=virtual-signal/se-planet] Planet"),
               detail_flow("Parent", "Calidus"),
               detail_flow("Radius", "5692"),
               detail_flow("Day/night cycle", "6.94 minutes"),
               detail_flow("Robot interference wind", "1.00"),
               detail_flow("Threat", "33%"),
               detail_flow("Solar", "100%"),
-              detail_flow("Automation signal", "[img=virtual-signal/se-planet]  4"),
+              detail_flow("Automation signal", "[img=virtual-signal/se-planet] 4"),
               { type = "line", direction = "horizontal" },
               resource_bar("crude-oil"),
               resource_bar("iron-ore"),
@@ -393,19 +399,20 @@ event.on_player_created(function(e)
               zoom = 0.2,
             },
           },
+          {
+            type = "flow",
+            style = "dialog_buttons_horizontal_flow",
+            style_mods = { top_margin = -8 },
+            { type = "button", style = "dialog_button", caption = "View pins", ref = { "view_pins_button" } },
+            {
+              type = "button",
+              style = "confirm_button",
+              style_mods = { horizontally_stretchable = true },
+              caption = "View surface",
+              ref = { "view_surface_button" },
+            },
+          },
         },
-      },
-      {
-        type = "flow",
-        style = "dialog_buttons_horizontal_flow",
-        ref = { "footer_flow" },
-        {
-          type = "empty-widget",
-          style = "flib_dialog_footer_drag_handle",
-          style_mods = { left_margin = 0 },
-          ignored_by_interaction = true,
-        },
-        { type = "button", style = "confirm_button", caption = "View surface", ref = { "view_surface_button" } },
       },
     },
   })
