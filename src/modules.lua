@@ -1,5 +1,6 @@
 return {
-  "universe-explorer",
+  "multiline-string-test",
+  -- "universe-explorer",
   -- "RecipeBook.fluid-temperatures"
   -- "FluidMustFlow",
   -- "flib-tests.area"
