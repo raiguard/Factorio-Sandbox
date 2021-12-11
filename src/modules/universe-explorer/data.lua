@@ -1,3 +1,23 @@
+data:extend({
+  {
+    type = "sprite",
+    name = "se_cut",
+    filename = "__base__/graphics/icons/shortcut-toolbar/mip/cut-x32.png",
+    size = 32,
+    mipmap_count = 2,
+    flags = { "gui-icon" },
+  },
+  {
+    type = "sprite",
+    name = "se_scan",
+    filename = "__Sandbox__/modules/universe-explorer/scan.png",
+    size = 64,
+    scale = 0.5,
+    -- mipmap_count = 2,
+    flags = { "gui-icon" },
+  },
+})
+
 local styles = data.raw["gui-style"]["default"]
 
 local empty_checkmark = {
@@ -14,6 +34,7 @@ local empty_checkmark = {
 styles.se_sort_checkbox = {
   type = "checkbox_style",
   font = "default-bold",
+  -- font_color = bold_font_color,
   padding = 0,
   default_graphical_set = {
     filename = "__core__/graphics/arrows/table-header-sort-arrow-down-white.png",
